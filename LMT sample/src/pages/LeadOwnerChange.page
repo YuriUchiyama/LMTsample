@@ -1,0 +1,20 @@
+<apex:page controller="LeadOwnerChangeController" contentType="text/html;charset=utf-8" showHeader="true">
+   <apex:form >
+    <apex:pageBlock >
+        <apex:pageBlockSection title="Custom Picklist Using selectList and selectOption" collapsible="false">
+        	<table>
+        		<tr>
+        			<apex:outputLabel >所有者
+            	
+            			<apex:selectList value="{!owner}" multiselect="false" size="1">
+            				<apex:selectOptions value="{!items}"/>
+        				</apex:selectList>
+        				 </apex:outputLabel>
+        			
+            	</tr> 
+            </table>
+       
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

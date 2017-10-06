@@ -1,0 +1,21 @@
+<apex:page controller="addComment" showHeader="False">
+<script>
+function refresh(){
+ self.close();
+}
+</script>
+<apex:form >
+<apex:sectionHeader title="Comment" subtitle="Comment To FeedItem"/>
+   <apex:pageBlock tabStyle="Contact">
+    <apex:pageBlockButtons location="Bottom">
+     <apex:commandButton value="Add" Action="{!save}" onclick="refresh()"/>
+    </apex:pageBlockButtons>
+      <apex:pageBlockSection title="Add COmment">
+        <apex:pageBlockSectionItem >
+         <apex:outputText ><B>Enter Comment:</B></apex:outputText>
+         <apex:inputTextarea value="{!cmttext}" cols="50" rows="5"/>
+        </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>
+     </apex:pageBlock>
+     </apex:form>
+</apex:page>
