@@ -1,20 +1,45 @@
-<apex:page controller="LeadOwnerChangeController" contentType="text/html;charset=utf-8" showHeader="true">
-   <apex:form >
-    <apex:pageBlock >
-        <apex:pageBlockSection title="Custom Picklist Using selectList and selectOption" collapsible="false">
-        	<table>
-        		<tr>
-        			<apex:outputLabel >所有者
-            	
-            			<apex:selectList value="{!owner}" multiselect="false" size="1">
-            				<apex:selectOptions value="{!items}"/>
-        				</apex:selectList>
-        				 </apex:outputLabel>
-        			
-            	</tr> 
-            </table>
-       
-        </apex:pageBlockSection>
-    </apex:pageBlock>
-    </apex:form>
+<apex:page controller="LeadOwnerChangeController"
+	contentType="text/html;charset=utf-8" showHeader="true">
+	<apex:form>
+		<apex:pageBlock>
+			<apex:pageBlockSection
+				title="リードの割り当て"
+				collapsible="false">
+
+
+				<apex:outputLabel value="割り当て先タイプ">
+
+					<apex:selectList value="{!owner}" multiselect="false" size="1">
+						<apex:selectOptions value="{!items}" />
+					</apex:selectList>
+				</apex:outputLabel>
+				<br />
+
+
+				<!-- リスト表示 -->
+				<apex:pageBlockTable value="{!userList}" var="user"
+					id="userListTable">
+					<apex:column>
+						<input type="radio" name="<strong>selectUser</strong>"
+							value="{!user.Id}" />
+					</apex:column>
+
+					<apex:column>
+
+						<apex:facet name="header">ユーザ名</apex:facet>
+						<apex:outputText id="uName" value="{!user.Name}" />
+					</apex:column>
+
+					<apex:column>
+						<apex:facet name="header">ロール</apex:facet>
+						<apex:outputText id="role" value="{!user.UserRole.Name}" />
+
+					</apex:column>
+
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+			<apex:commandButton action="{!save}" value="保存" id="save" />
+			<apex:commandButton value="キャンセル" id="cancel" />
+		</apex:pageBlock>
+	</apex:form>
 </apex:page>

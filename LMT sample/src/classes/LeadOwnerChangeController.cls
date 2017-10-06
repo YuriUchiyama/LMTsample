@@ -1,28 +1,29 @@
 public with sharing class LeadOwnerChangeController {
-	private string owner {get;set;}
-	private List<User> userlist;
-	private List<Group>  queuelist;	
-	private string userName;
-	private string agencyCode;
-	private List<Groupmember> userQueue;
+	public Lead lead {get;set;}
+	public string owner  {get;set;}
+	public List<User> userList;
+	public List<Group>  queueList;
+	public string userName;
+	public string agencyCode;
+	public List<Groupmember> userQueue;
 
 	public LeadOwnerChangeController(){
 		owner = '0';
 		agencyCode = null;
-		
+
 	}
-	
-	
+
+
 	public List<SelectOption> getItems() {
         List<SelectOption> options = new List<SelectOption>();
         options.add(new SelectOption('User','ユーザ'));
         options.add(new SelectOption('Queue','キュー'));
         return options;
     }
-    
+
 	//ログインユーザーの代理店格コード、キューを特定
-	private void getLoginUserInfo(){
-		
+	public void getLoginUserInfo(){
+
 		Id queueId = null;
 		User loginUserinfo = [select id, contactID, name from User where id =:userinfo.getUserId()];
 		if(loginUserinfo.contactID != null){
@@ -35,49 +36,69 @@ public with sharing class LeadOwnerChangeController {
 				}
 			}
 		}
-		
+
 		//LMTリード割り当て用対象キュー(LMT_LA_から始まるname)
 		Map<Id, Group> queueMap = new Map<Id, Group>([select Id,name from Group where type = 'Queue' and name like 'LMT_LA_%']);
-		List<GroupMember> queueIds = [select id,GroupId 
-										from GroupMember 
+		List<GroupMember> queueIds = [select id,GroupId
+										from GroupMember
 										where UserOrGroupId =: userinfo.getUserId()
 										and GroupId In :queueMap.keySet()];
-		
+
 		/*
 		if(queueIds.size() > 0){
 			//SJの場合
 			if(agencyCode.equals(System.Label.LMT_SonicJapan_AgencyCode)){
 				//いずれかのSJQueueに所属しているか
 				for(GroupMember qId : queueIds){
-					
+
 					//本社
-					//全代理店キュー。ユーザーは代理店内全て。			
+					//全代理店キュー。ユーザーは代理店内全て。
 					if(queueMap.get(qId.GroupId).name.equals('Hq_')){
-						
+
 						userlist = [select id, name, UserRole
-									from User 
+									from User
 									where contactID.Account.yuri__E_ParentZHEADAY__c =:agencyCode];
-					
+
 					//支社
-					//所属先のキューのみ。ユーザーは支社内全て。			
+					//所属先のキューのみ。ユーザーは支社内全て。
 					}else if(queueMap.get(qId.GroupId).name.equals('SJ')){
 						userlist = [select id, name, UserRole
-									from User 
+									from User
 									where contactID.Account.yuri__E_ParentZHEADAY__c =:agencyCode
 									and UserRole =: userinfo.getUserRoleId()];
-						
+
 					}
 				}
-				
-				
+
+
 			}
 		}else{
 			//自分のみ出る。キューリストは空。
-			
+
 		}*/
-		
-		
+
+
 	}
+
+	//public List<User> getUserList(String code, Id roleId){
+	public List<User> getUserList(){
+		userList = new List<User>();
+		userList = [Select Id, Name, UserRole.Name from user];
+		return userList;
+
+	}
+
+
+
+	public List<Group> getQueueList(){
+		return queueList;
+	}
+
+	public void Save(){
+
+	}
+
+
 
 
 }
